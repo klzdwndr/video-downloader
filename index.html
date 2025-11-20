@@ -2,59 +2,127 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <title>Kalz Downloader - Beta</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kalz Downloader Clone (Beta)</title>
+
   <link rel="stylesheet" href="style.css" />
+
+  <style>
+    body {
+      background: #0d1224;
+      font-family: Arial, sans-serif;
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .title {
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      opacity: 0.7;
+      margin-bottom: 20px;
+    }
+
+    .card {
+      background: #151b34;
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 25px;
+      border: 1px solid #28315a;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      margin-top: 10px;
+      margin-bottom: 15px;
+      background: #0f152b;
+      color: white;
+      font-size: 16px;
+    }
+
+    .btn {
+      padding: 12px 25px;
+      background: #1f4eff;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+
+    .btn-secondary {
+      background: #2c334d;
+    }
+
+    .result-box {
+      background: #1d2340;
+      padding: 20px;
+      border-radius: 15px;
+      margin-top: 20px;
+      display: none;
+    }
+
+    .success {
+      background: #0f8f40;
+      padding: 10px 15px;
+      border-radius: 10px;
+      margin-top: 10px;
+    }
+  </style>
 </head>
+
 <body>
-  <div class="bg-blur"></div>
+  <div class="container">
 
-  <main class="page">
-    <header class="header">
-      <div class="brand">
-        <div class="avatar">TS</div>
-        <div>
-          <h1 class="title">Kalz Downloader (Beta)</h1>
-          <p class="subtitle">
-            Tempel URL video publik lalu klik <b>Gas</b>. Tidak perlu login / akun.
-          </p>
-        </div>
-      </div>
-    </header>
+    <!-- HEADER -->
+    <div>
+      <div class="title">Kalz Downloader Clone (Beta)</div>
+      <div class="subtitle">Tempel URL video publik lalu klik <b>Gas</b>. Tidak perlu login / akun.</div>
+    </div>
 
-    <section class="card">
-      <label class="input-label" for="urlInput">Masukin link VT nya</label>
-      <div class="input-row">
-        <input
-          id="urlInput"
-          type="url"
-          placeholder="https://vt.tiktok.com/XXXXXXXX/"
-          autocomplete="off"
-        />
-      </div>
+    <!-- INPUT CARD -->
+    <div class="card">
+      <label>Masukin link VT nya</label>
+      <input id="videoUrl" placeholder="https://vt.tiktok.com/xxxx" />
 
-      <div class="button-row">
-        <button id="gasBtn" class="btn btn-primary">Gas</button>
-        <button id="clearBtn" class="btn btn-ghost">Hapus</button>
-      </div>
+      <button class="btn" onclick="startDownload()">Gas</button>
+      <button class="btn btn-secondary" onclick="clearForm()">Hapus</button>
 
-      <p class="hint">
-        Website ini sedang tahap pengembangan mohon bersabar!</b>.
+      <p style="opacity: 0.5; margin-top: 10px;">
+        Website ini cuma UI. Tombol Gas bakal manggil API kamu sendiri.  
+        Edit di file <b>script.js</b> bagian <b>CALL_API_DI_SINI</b>.
       </p>
+    </div>
 
-      <div id="statusBox" class="status hidden"></div>
+    <!-- HASIL -->
+    <div id="resultBox" class="result-box">
+      <div id="statusMsg" class="success">Berhasil! Pilih kualitas yang kamu mau.</div>
 
-      <div id="resultBox" class="result hidden">
-        <h3>Hasil Parser</h3>
-        <div id="resultList"></div>
-      </div>
-    </section>
+      <div id="resultArea"></div>
+    </div>
 
-    <section class="card card-info">
-      <h2>Tentang Kalz Downloader</h2>
+    <!-- TENTANG -->
+    <div class="card">
+      <h2>Tentang Kalz Download Clone</h2>
       <p>
-        Ini contoh situs pengunduh tiktok berbasis web, Kalz Downloader ini bisa membantu anda yang kesulitan saat mendownload video tiktok
+        Ini contoh situs pengunduh video berbasis web. Semua proses download sebenarnya 
+        dilakukan oleh server / API milik kamu sendiri (bukan dari GitHub Pages).
       </p>
+
       <h3>Fitur Utama</h3>
       <ul>
         <li>UI modern, responsif, enak di HP.</li>
@@ -62,13 +130,12 @@
         <li>Deploy gratis di GitHub Pages.</li>
         <li>Bisa dihubungkan ke beberapa server / API cadangan.</li>
       </ul>
-      <p class="disclaimer">
-        Gunakan hanya untuk konten yang kamu punya haknya.
-        Pastikan API kamu patuh hukum & kebijakan platform.
-      </p>
-    </section>
-  </main>
+
+      <p>Copyright @Kalz.</p>
+      <p style="opacity: 0.6;">Gunakan hanya untuk konten yang kamu punya haknya.</p>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
-  </html>
+</html>
