@@ -1,1 +1,77 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Toksave Clone - Beta</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg-blur"></div>
 
+  <main class="page">
+    <header class="header">
+      <div class="brand">
+        <div class="avatar">TS</div>
+        <div>
+          <h1 class="title">Toksave Clone (Beta)</h1>
+          <p class="subtitle">
+            Tempel URL video publik lalu klik <b>Gas</b>. Tidak perlu login / akun.
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <section class="card">
+      <label class="input-label" for="urlInput">Masukin link VT nya</label>
+      <div class="input-row">
+        <input
+          id="urlInput"
+          type="url"
+          placeholder="https://vt.tiktok.com/XXXXXXXX/"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="button-row">
+        <button id="gasBtn" class="btn btn-primary">Gas</button>
+        <button id="clearBtn" class="btn btn-ghost">Hapus</button>
+      </div>
+
+      <p class="hint">
+        Website ini cuma UI. Tombol Gas bakal manggil API kamu sendiri.
+        Edit di file <code>script.js</code> bagian <b>CALL_API_DI_SINI</b>.
+      </p>
+
+      <div id="statusBox" class="status hidden"></div>
+
+      <div id="resultBox" class="result hidden">
+        <h3>Hasil Parser</h3>
+        <div id="resultList"></div>
+      </div>
+    </section>
+
+    <section class="card card-info">
+      <h2>Tentang Toksave Clone</h2>
+      <p>
+        Ini contoh situs pengunduh video berbasis web. Semua proses download
+        sebenernya dilakukan oleh server / API milik kamu sendiri (bukan dari
+        GitHub Pages).
+      </p>
+      <h3>Fitur Utama</h3>
+      <ul>
+        <li>UI modern, responsif, enak di HP.</li>
+        <li>Tanpa login atau install aplikasi.</li>
+        <li>Deploy gratis di GitHub Pages.</li>
+        <li>Bisa dihubungkan ke beberapa server / API cadangan.</li>
+      </ul>
+      <p class="disclaimer">
+        Gunakan hanya untuk konten yang kamu punya haknya.
+        Pastikan API kamu patuh hukum & kebijakan platform.
+      </p>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
