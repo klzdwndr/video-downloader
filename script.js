@@ -396,14 +396,14 @@ function renderResult(payload) {
 // ------------------------------------------------------
 async function processUrl(videoUrl) {
   clearResults();
-  showStatus("Menghubungi API...", "info");
+  showStatus("Loading...", "info");
   gasBtn.disabled = true;
   gasBtn.textContent = "Proses...";
 
   try {
     const json = await callApi(videoUrl);
 
-    showStatus("Sukses menerima respons. Rendering...", "success");
+    showStatus("Sukses menerima permintaan...", "success");
     renderResult(json);
   } catch (err) {
     console.error("API error:", err);
