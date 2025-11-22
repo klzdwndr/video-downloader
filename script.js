@@ -172,7 +172,6 @@ function renderResult(payload) {
   // Gather download links
   const downloads = [];
 
-  // If API already returns downloads array
   if (Array.isArray(payload.downloads) && payload.downloads.length) {
     payload.downloads.forEach(d => {
       downloads.push({
@@ -194,11 +193,19 @@ function renderResult(payload) {
   // fallback: extract URLs from object
   if (!downloads.length) {
     const urls = Array.from(collectUrls(payload));
-    // prefer mp4/play-like urls
     const preferred = urls.filter(u => /\.mp4(\?|$)/i.test(u) || /\/play\/|\/video\//i.test(u) || /play/i.test(u));
     const uniq = Array.from(new Set(preferred.length ? preferred : urls));
     uniq.forEach((u, i) => downloads.push({ label: `Detected ${i+1}`, url: u, size: "" }));
   }
+
+  // ALSO collect image/audio URLs from payload for separate foto/audio buttons
+  const allUrls = Array.from(collectUrls(payload));
+  const imageUrls = allUrls.filter(u => /\.(jpe?g|png|webp|gif)(\?|$)/i.test(u));
+  const audioUrls = allUrls.filter(u => /\.(mp3|m4a|aac|ogg|wav)(\?|$)/i.test(u) || /audio/i.test(u));
+
+  const audioUrl = audioUrls.length ? audioUrls[0] : null;
+  // prefer explicit thumbnail if exists
+  const photoUrl = thumbnail || (imageUrls.length ? imageUrls[0] : null);
 
   // UI: clear previous
   resultList.innerHTML = "";
@@ -211,7 +218,6 @@ function renderResult(payload) {
       break;
     }
   }
-  // if none matched, pick first http-looking url as last resort
   if (!playableUrl && downloads.length) {
     const firstCandidate = downloads.find(d => typeof d.url === "string" && /^https?:\/\//i.test(d.url));
     if (firstCandidate) playableUrl = firstCandidate.url;
@@ -219,32 +225,27 @@ function renderResult(payload) {
 
   // If we have a playable url and video player present -> show it
   if (playableUrl && previewVideo && playerBox) {
-    // set crossOrigin - may help with some CORS cases (still not guaranteed)
     try { previewVideo.crossOrigin = "anonymous"; } catch (e) {}
     previewVideo.src = playableUrl;
-    // set poster to thumbnail if available
-    if (thumbnail) previewVideo.poster = thumbnail;
+    if (photoUrl) previewVideo.poster = photoUrl;
     previewVideo.load();
     playerBox.classList.remove("hidden");
-
-    // hide thumbnail fallback (we will not show the <img> when video chosen)
     if (thumbBox) thumbBox.classList.add("hidden");
   } else {
     // show thumbnail if present (fallback)
-    if (thumbnail) {
+    if (photoUrl) {
       if (thumbBox && thumbImg) {
-        thumbImg.src = thumbnail;
+        thumbImg.src = photoUrl;
         thumbBox.classList.remove("hidden");
       } else {
         const img = document.createElement("img");
-        img.src = thumbnail;
+        img.src = photoUrl;
         img.alt = title || "thumbnail";
         img.style.maxWidth = "100%";
         img.style.borderRadius = "10px";
         resultList.appendChild(img);
       }
     }
-    // hide player if no playable url
     if (playerBox) playerBox.classList.add("hidden");
   }
 
@@ -257,7 +258,7 @@ function renderResult(payload) {
     resultList.appendChild(h);
   }
 
-  // Render download rows (buttons)
+  // Render download rows (video downloads)
   downloads.forEach(d => {
     const node = document.createElement("div");
     node.className = "result-item";
@@ -275,8 +276,41 @@ function renderResult(payload) {
     resultList.appendChild(node);
   });
 
+  // ===== new: row with Download Foto + Download Audio (single buttons) =====
+  // Only show when at least one exists (photoUrl or audioUrl)
+  if (photoUrl || audioUrl) {
+    const box = document.createElement("div");
+    box.className = "result-item";
+    box.style.display = "flex";
+    box.style.justifyContent = "flex-start";
+    box.style.gap = "12px";
+    box.style.marginTop = "6px";
+    box.style.alignItems = "center";
+
+    if (photoUrl) {
+      const aPhoto = document.createElement("a");
+      aPhoto.href = photoUrl;
+      aPhoto.download = "";
+      aPhoto.className = "download-btn";
+      aPhoto.textContent = "Download Foto";
+      box.appendChild(aPhoto);
+    }
+
+    if (audioUrl) {
+      const aAudio = document.createElement("a");
+      aAudio.href = audioUrl;
+      aAudio.download = "";
+      aAudio.className = "download-btn";
+      aAudio.textContent = "Download Audio";
+      box.appendChild(aAudio);
+    }
+
+    // if none available, don't append
+    resultList.appendChild(box);
+  }
+
   resultBox.classList.remove("hidden");
-}
+  }
 
 // ------------------------------------------------------
 // Main flow: called when user clicks Gas
