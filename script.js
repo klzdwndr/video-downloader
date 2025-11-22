@@ -344,7 +344,7 @@ async function processUrl(videoUrl) {
     showStatus("Error: " + msg, "error");
   } finally {
     gasBtn.disabled = false;
-    gasBtn.textContent = "Gas";
+    gasBtn.textContent = "Download";
   }
 }
 
