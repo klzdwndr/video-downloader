@@ -10,7 +10,7 @@ const API_KEY = ""; // jika perlu: "Bearer xxxxx" atau "API_KEY_HERE"
 
 // CORS proxy (testing only) - jangan pakai untuk produksi
 const USE_CORS_PROXY = false;
-const CORS_PROXY = "https://cors-anywhere.herokuapp.com/"; // contoh public proxy (rate-limit & tidak disarankan)
+const CORS_PROXY = "https://www.tikwm.com/api/?url="; // contoh public proxy (rate-limit & tidak disarankan)
 
 // ------------------------------------------------------
 // DOM elements (sesuaikan id di index.html mu)
