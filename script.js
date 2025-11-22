@@ -165,10 +165,11 @@ function renderResult(payload) {
   // normalize wrapper
   if (payload && payload.ok && payload.result) payload = payload.result;
 
+  // judul & thumbnail
   const title = payload.title || payload.name || payload.desc || (payload.data && payload.data.title) || "";
   const thumbnail = pickThumbnail(payload);
 
-  // collect downloads (video)
+  // kumpulkan download links
   const downloads = [];
   if (Array.isArray(payload.downloads) && payload.downloads.length) {
     payload.downloads.forEach(d => {
@@ -176,136 +177,98 @@ function renderResult(payload) {
         label: d.label || d.quality || d.name || "Video",
         url: d.url || d.link || d.src || d,
         size: d.size || d.filesize || "",
-        filename: d.filename || ""
       });
     });
   }
+
+  // tikwm-like fields
   if (!downloads.length) {
-    if (payload.play) downloads.push({ label: "Tanpa Watermark", url: payload.play, size: payload.size || "" });
-    if (payload.wmplay) downloads.push({ label: "Dengan Watermark", url: payload.wmplay, size: payload.size || "" });
-    if (payload.video && payload.video.play_addr) downloads.push({ label: "Play", url: payload.video.play_addr });
+    if (payload.play) downloads.push({ label: "Tanpa Watermark", url: payload.play });
+    if (payload.wmplay) downloads.push({ label: "Dengan Watermark", url: payload.wmplay });
   }
+
+  // fallback collect
   if (!downloads.length) {
     const urls = Array.from(collectUrls(payload));
-    const preferred = urls.filter(u => /\.mp4(\?|$)/i.test(u) || /\/play\/|\/video\//i.test(u) || /play/i.test(u));
+    const preferred = urls.filter(u => /\.mp4(\?|$)/i.test(u) || /video|play/i.test(u));
     const uniq = Array.from(new Set(preferred.length ? preferred : urls));
-    uniq.forEach((u, i) => downloads.push({ label: `Detected ${i+1}`, url: u, size: "" }));
+    uniq.forEach((u, i) => downloads.push({ label: `Video ${i+1}`, url: u }));
   }
 
-  // collect images/audio for extra buttons
-  const allUrls = Array.from(collectUrls(payload));
-  const imageUrls = allUrls.filter(u => /\.(jpe?g|png|webp|gif)(\?|$)/i.test(u));
-  const audioUrls = allUrls.filter(u => /\.(mp3|m4a|aac|ogg|wav)(\?|$)/i.test(u) || /audio/i.test(u));
-  const audioUrl = audioUrls.length ? audioUrls[0] : null;
-  const photoUrl = thumbnail || (imageUrls.length ? imageUrls[0] : null);
-
-  // clear UI
   resultList.innerHTML = "";
-  if (playerBox) playerBox.classList.add("hidden");
-  if (thumbBox) thumbBox.classList.add("hidden");
 
-  // pick playable (mp4/play-like)
-  let playableUrl = null;
-  for (const d of downloads) {
-    if (d.url && ( /\.mp4(\?|$)/i.test(d.url) || /\/play\/|\/video\//i.test(d.url) )) {
-      playableUrl = d.url;
-      break;
-    }
-  }
-  if (!playableUrl && downloads.length) {
-    const firstCandidate = downloads.find(d => typeof d.url === "string" && /^https?:\/\//i.test(d.url));
-    if (firstCandidate) playableUrl = firstCandidate.url;
-  }
-
-  // If playable -> show video player (use poster if available)
-  if (playableUrl && previewVideo && playerBox) {
-    try { previewVideo.crossOrigin = "anonymous"; } catch(e){}
-    previewVideo.src = playableUrl;
-    if (photoUrl) previewVideo.poster = photoUrl;
+  // TAMPILKAN VIDEO PREVIEW
+  if (downloads.length && previewVideo && playerBox) {
+    const vid = downloads[0].url;
+    previewVideo.src = vid;
     previewVideo.load();
     playerBox.classList.remove("hidden");
-    if (thumbBox) thumbBox.classList.add("hidden");
-  } else {
-    // no playable: show thumbnail image if exists
-    if (photoUrl) {
-      if (thumbBox && thumbImg) {
-        thumbImg.src = photoUrl;
-        thumbBox.classList.remove("hidden");
-      } else {
-        const img = document.createElement("img");
-        img.src = photoUrl;
-        img.alt = title || "thumbnail";
-        img.style.maxWidth = "100%";
-        img.style.borderRadius = "10px";
-        resultList.appendChild(img);
-      }
+  }
+
+  // TAMPILKAN THUMBNAIL
+  if (thumbnail) {
+    if (thumbBox && thumbImg) {
+      thumbImg.src = thumbnail;
+      thumbBox.classList.remove("hidden");
     }
   }
 
-  // Title
+  // JUDUL
   if (title) {
     const h = document.createElement("div");
     h.style.fontWeight = "700";
-    h.style.margin = "8px 0";
+    h.style.margin = "10px 0";
     h.textContent = title;
     resultList.appendChild(h);
   }
 
-  // Render only "Open" button for each detected download (if you still want Open),
-  // but DO NOT render per-video Download button (we'll provide global Foto/Audio downloads instead).
-  downloads.forEach(d => {
-    const node = document.createElement("div");
-    node.className = "result-item";
-    node.innerHTML = `
-      <div style="display:flex;flex-direction:column;margin-bottom:8px;">
-        <div style="font-weight:600">${d.label}</div>
-        <div style="opacity:.75;font-size:13px">${d.size || ""}</div>
-      </div>
+  // -------------------------------------------
+  // BAGIAN TOMBOL UTAMA
+  // -------------------------------------------
 
-      <div class="download-actions">
-        <a href="${d.url}" target="_blank" class="open-btn">Open</a>
-      </div>
-    `;
-    resultList.appendChild(node);
-  });
+  const btnRow = document.createElement("div");
+  btnRow.style.display = "flex";
+  btnRow.style.flexDirection = "column";
+  btnRow.style.gap = "12px";
+  btnRow.style.marginTop = "18px";
 
-  // === HERE: add single row with Download Foto + Download Audio (if available) ===
-  const extras = document.createElement("div");
-  extras.className = "result-item";
-  extras.style.display = "flex";
-  extras.style.gap = "12px";
-  extras.style.marginTop = "10px";
-
-  if (photoUrl) {
-    const aPhoto = document.createElement("a");
-    aPhoto.href = photoUrl;
-    aPhoto.download = "";
-    aPhoto.className = "download-btn";
-    aPhoto.textContent = "Download Foto";
-    extras.appendChild(aPhoto);
+  // --- 1) DOWNLOAD VIDEO (utama)
+  if (downloads.length) {
+    const btnVid = document.createElement("a");
+    btnVid.href = downloads[0].url;
+    btnVid.download = "";
+    btnVid.className = "download-btn";
+    btnVid.textContent = "Download Video";
+    btnRow.appendChild(btnVid);
   }
 
-  if (audioUrl) {
-    const aAudio = document.createElement("a");
-    aAudio.href = audioUrl;
-    aAudio.download = "";
-    aAudio.className = "download-btn";
-    aAudio.textContent = "Download Audio";
-    extras.appendChild(aAudio);
+  // --- 2) DOWNLOAD FOTO (thumbnail)
+  if (thumbnail) {
+    const btnFoto = document.createElement("a");
+    btnFoto.href = thumbnail;
+    btnFoto.download = "";
+    btnFoto.className = "download-btn";
+    btnFoto.textContent = "Download Foto";
+    btnRow.appendChild(btnFoto);
   }
 
-  // If neither exist, tampilkan hint kecil
-  if (extras.children.length) {
-    resultList.appendChild(extras);
-  } else {
-    const hint = document.createElement("div");
-    hint.style.opacity = "0.8";
-    hint.style.marginTop = "8px";
-    hint.textContent = "Tidak ada file foto/audio yang tersedia untuk diunduh.";
-    resultList.appendChild(hint);
+  // --- 3) DOWNLOAD AUDIO
+  const urls = Array.from(collectUrls(payload));
+  const audio = urls.find(u => /\.(mp3|m4a|aac|wav|ogg)(\?|$)/i.test(u) || /audio/i.test(u));
+  if (audio) {
+    const btnAudio = document.createElement("a");
+    btnAudio.href = audio;
+    btnAudio.download = "";
+    btnAudio.className = "download-btn";
+    btnAudio.textContent = "Download Audio";
+    btnRow.appendChild(btnAudio);
   }
+
+  // masukin ke list
+  resultList.appendChild(btnRow);
 
   resultBox.classList.remove("hidden");
+}
 }
 
 // ------------------------------------------------------
