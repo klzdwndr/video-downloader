@@ -369,21 +369,22 @@ function renderResult(payload) {
 
   // Render only "Open" button for each detected download (if you still want Open),
   // but DO NOT render per-video Download button (we'll provide global Foto/Audio downloads instead).
-  downloads.forEach(d => {
-    const node = document.createElement("div");
-    node.className = "result-item";
-    node.innerHTML = `
-      <div style="display:flex;flex-direction:column;margin-bottom:8px;">
-        <div style="font-weight:600">${d.label}</div>
-        <div style="opacity:.75;font-size:13px">${d.size || ""}</div>
-      </div>
+  // tombol DOWNLOAD VIDEO langsung
+downloads.forEach(d => {
+  const node = document.createElement("div");
+  node.className = "result-item";
+  node.innerHTML = `
+    <div style="display:flex;flex-direction:column;margin-bottom:8px;">
+      <div style="font-weight:600">${d.label}</div>
+      <div style="opacity:.75;font-size:13px">${d.size || ""}</div>
+    </div>
 
-      <div class="download-actions">
-        <a href="${d.url}" target="_blank" class="open-btn">Open</a>
-      </div>
-    `;
-    resultList.appendChild(node);
-  });
+    <div class="download-actions">
+      <a href="${d.url}" download class="download-btn">Download Video</a>
+    </div>
+  `;
+  resultList.appendChild(node);
+});
 
   // === HERE: add single row with Download Foto + Download Audio (if available) ===
   const extras = document.createElement("div");
