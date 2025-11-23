@@ -7,74 +7,78 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- overlay flash (putih sekejap saat kilat) -->
+  <div class="bg-flash" aria-hidden="true"></div>
 
-<main class="page">
+  <!-- canvas petir (di bawah page) -->
+  <canvas id="lightningCanvas" aria-hidden="true"></canvas>
 
-  <header class="header">
-    <div class="brand">
-      <div class="avatar">KZ</div>
-      <div>
-        <h1 class="title">Kalz Downloader (Beta)</h1>
-        <p class="subtitle">
-          Tempel URL video publik lalu klik <b>Download</b>. Tidak perlu login / akun.
-        </p>
+  <main class="page">
+    <header class="header">
+      <div class="brand">
+        <div class="avatar">KZ</div>
+        <div>
+          <h1 class="title">Kalz Downloader (Beta)</h1>
+          <p class="subtitle">
+            Tempel URL video publik lalu klik <b>Download</b>. Tidak perlu login / akun.
+          </p>
+        </div>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <section class="card">
-    <label for="urlInput">Masukin link VT nya</label>
-
-    <div class="input-row">
-      <input id="urlInput" type="url" placeholder="https://vt.tiktok.com/XXXXXXXX/" autocomplete="off" />
-    </div>
-
-    <div class="button-row">
-      <button id="gasBtn" class="btn btn-primary">Download</button>
-      <button id="clearBtn" class="btn btn-ghost">Hapus</button>
-    </div>
-
-    <p class="hint">Jika ngebug silahkan pencet button download lagi</p>
-
-    <div id="resultBox" class="result hidden">
-      <h3>Hasil Parser</h3>
-
-      <div id="playerBox" class="player hidden">
-        <video id="previewVideo" controls playsinline style="width:100%; border-radius:12px;"></video>
+    <section class="card">
+      <label class="input-label" for="urlInput">Masukin link VT nya</label>
+      <div class="input-row">
+        <input
+          id="urlInput"
+          type="url"
+          placeholder="https://vt.tiktok.com/XXXXXXXX/"
+          autocomplete="off"
+        />
       </div>
 
-      <div id="thumbBox" class="thumb hidden">
-        <img id="thumbImg" src="" style="width:100%; border-radius:12px;">
+      <div class="button-row">
+        <button id="gasBtn" class="btn btn-primary">Download</button>
+        <button id="clearBtn" class="btn btn-ghost">Hapus</button>
       </div>
 
-      <div id="resultList"></div>
-    </div>
-  </section>
+      <!-- statusBox akan dibuat otomatis oleh script jika belum ada -->
+      <div id="resultBox" class="result hidden">
+        <h3>Hasil Parser</h3>
 
-  <section class="card">
-    <h2>Tentang Kalz Downloader</h2>
+        <div id="playerBox" class="player hidden" style="margin-bottom:12px;">
+          <video id="previewVideo" controls playsinline style="width:100%; border-radius:10px;">
+            Your browser does not support the video tag.
+          </video>
+        </div>
 
-    <p>
-      Ini adalah situs pengunduh video berbasis website, kalz downloader siap membantu Anda
-      yang sedang kesulitan mendownload video dari tiktok.
-    </p>
+        <div id="thumbBox" class="thumb hidden" style="margin-bottom:12px;">
+          <img id="thumbImg" src="" alt="thumbnail" style="width:100%; border-radius:10px;">
+        </div>
 
-    <h3>Fitur Utama</h3>
-    <ul>
-      <li>UI modern, responsif, enak di HP.</li>
-      <li>Tanpa login atau install aplikasi.</li>
-      <li>Website gratis untuk publik.</li>
-      <li>Tanpa Watermark.</li>
-    </ul>
+        <div id="resultList" class="result-list"></div>
+      </div>
+    </section>
 
-    <p>Hak cipta ©kalz sann</p>
-  </section>
+    <section class="card card-info">
+      <h2>Tentang Kalz Downloader</h2>
+      <p>
+        Ini adalah situs pengunduh video berbasis website, kalz downloader siap membantu Anda yang sedang kesulitan saat mendownload video dari tiktok
+      </p>
+      <h3>Fitur Utama</h3>
+      <ul>
+        <li>UI modern, responsif, enak di HP.</li>
+        <li>Tanpa login atau install aplikasi.</li>
+        <li>Website gratis untuk publik</li>
+        <li>Tanpa Watermark</li>
+      </ul>
+      <p class="disclaimer">
+        Gunakan website ini sesuai kebijakan pengembang dan hukum.<br>
+        Hak cipta ©kalz sann
+      </p>
+    </section>
+  </main>
 
-</main>
-
-<div class="bg-flash"></div>
-<canvas id="lightningCanvas"></canvas>
-
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
