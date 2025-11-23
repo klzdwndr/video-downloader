@@ -1,12 +1,8 @@
-/* ===========================================
-   KILLUA LIGHTNING NEON — FINAL STABLE BUILD
-   =========================================== */
-
 /* RESET */
 * { box-sizing: border-box; }
-html,body { margin:0; padding:0; height:100%; }
+html, body { margin:0; padding:0; height:100%; }
 
-/* BACKGROUND FOTO */
+/* BACKGROUND */
 body {
   font-family: "Inter", sans-serif;
   color: #eaf2ff;
@@ -18,16 +14,12 @@ body {
   background-attachment: fixed;
 }
 
-/* OVERLAY GELAP TIPIS */
+/* GELAP TIPIS SUPAYA TEKS TERBACA (TIDAK BLUR) */
 body::before {
   content:"";
   position:fixed;
   inset:0;
-  background: linear-gradient(
-      180deg,
-      rgba(0,0,15,0.35),
-      rgba(0,0,25,0.45)
-  );
+  background: rgba(0,0,0,0.25);   /* tipis aja */
   z-index:0;
 }
 
@@ -40,22 +32,14 @@ body::before {
   padding: 20px;
 }
 
-/* =============================
-      CARD — GLASSMORPHISM
-   ============================= */
+/* CARD TRANSPARAN (PERSIS SS) */
 .card {
-  background: rgba(0,0,0,0.22);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-
+  background: rgba(0,0,0,0.22);    /* transparan */
+  backdrop-filter: blur(6px);
   border-radius: 18px;
-  padding: 18px;
-
-  border: 1px solid rgba(255,255,255,0.08);
-
-  box-shadow:
-    0 8px 25px rgba(0,0,0,0.55),
-    0 0 22px rgba(45,120,255,0.18) inset;
+  padding: 20px;
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 4px 30px rgba(0,0,0,0.45);
 }
 
 /* HEADER */
@@ -63,141 +47,101 @@ body::before {
 .brand { display:flex; gap:12px; align-items:center; }
 
 .avatar {
-  width:55px; height:55px;
+  width:55px;
+  height:55px;
   border-radius:50%;
   background: radial-gradient(circle,#4a72ff,#1d2cff);
-  display:flex; justify-content:center; align-items:center;
-  font-weight:700; color:white;
-  box-shadow:0 0 16px rgba(85,130,255,0.8);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-weight:700;
+  color:white;
+  box-shadow:0 0 14px rgba(85,130,255,0.75);
 }
 
 .title { font-size:26px; margin:0; font-weight:900; }
-.subtitle { margin:0; opacity:.88; }
+.subtitle { margin:0; opacity:.9; }
 
-/* INPUT */
+/* INPUT TRANSPARAN (SAMA PERSIS SS) */
 #urlInput {
   width:100%;
   padding:14px 16px;
+  border-radius:12px;
+  color:#fff;
 
   background: rgba(0,0,0,0.22);
-  border-radius:14px;
-  color:white;
-
-  border:1px solid rgba(160,180,255,0.35);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-
-  box-shadow:0 0 14px rgba(50,80,160,0.25);
+  border:1px solid rgba(150,180,255,0.35);
+  backdrop-filter: blur(4px);
+  box-shadow: 0 0 12px rgba(0,0,0,0.4);
 }
 
-/* ====================
-      BUTTON STYLE
-   ==================== */
+/* BUTTONS */
 .button-row { display:flex; gap:12px; margin-top:10px; }
 
 .btn {
   padding: 12px 20px;
-  font-weight: 700;
   border-radius: 14px;
+  font-weight: 700;
   cursor:pointer;
   border:none;
-  box-shadow:0 4px 15px rgba(0,0,0,0.45);
 }
 
+/* PRIMARY (BIRU PERSIS SS) */
 .btn-primary {
-  background: rgba(60,110,255,0.88);
-  color:white;
-
+  background: rgba(60,110,255,0.85);
   backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-
-  box-shadow:0 0 18px rgba(77,130,255,0.6);
-  transition:.15s;
+  color:white;
+  box-shadow: 0 0 20px rgba(77,130,255,0.75);
+  transition: .15s;
 }
 
 .btn-primary:hover {
-  filter:brightness(1.1);
-  box-shadow:0 0 26px rgba(77,130,255,0.95);
+  filter: brightness(1.12);
+  box-shadow: 0 0 30px rgba(77,130,255,1);
 }
 
+/* GHOST BUTTON (BENING) */
 .btn-ghost {
   background: rgba(255,255,255,0.12);
   color:white;
-
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-
-  box-shadow:0 0 12px rgba(255,255,255,0.15);
+  backdrop-filter: blur(3px);
+  box-shadow: 0 0 10px rgba(255,255,255,0.05);
 }
 
-/* ====================
-      STATUS BOX
-   ==================== */
-#statusBox {
-  margin-top:12px;
-  padding:10px 16px;
-  border-radius:10px;
-  font-weight:800;
-  width:fit-content;
-  backdrop-filter: blur(4px);
-}
-
-#statusBox[data-type="success"] {
-  background: rgba(40,170,90,0.75);
-  border:1px solid rgba(60,255,120,0.55);
-  color:white;
-}
-
-#statusBox[data-type="error"] {
-  background: rgba(200,40,40,0.75);
-  border:1px solid rgba(255,80,80,0.55);
-  color:white;
-}
-
-/* ====================
-   RESULT BOX
-   ==================== */
+/* RESULT AREA */
 .result {
   margin-top:20px;
-  background: rgba(0,0,20,0.26);
-  border-radius:14px;
+  background: rgba(0,0,20,0.25);
   padding:16px;
-
-  border:1px solid rgba(120,160,255,0.18);
-  backdrop-filter: blur(6px);
+  border-radius:14px;
+  backdrop-filter: blur(4px);
+  border:1px solid rgba(120,160,255,0.12);
 }
+
 .result.hidden { display:none; }
 
+/* VIDEO & THUMB */
 .player, .thumb {
   border-radius:12px;
-  box-shadow:
-    0 0 25px rgba(0,0,0,0.65),
-    0 0 30px rgba(45,120,255,0.25);
+  box-shadow: 0 0 30px rgba(0,0,0,0.6);
 }
 
-/* =========================
-      LIGHTNING EFFECT
-   ========================= */
+/* FLASH + PETIR CANVAS */
 #lightningCanvas {
-  position:fixed;
-  top:0; left:0;
+  position: fixed;
+  inset: 0;
   width:100vw;
   height:100vh;
   pointer-events:none;
   z-index:1;
-  mix-blend-mode:screen;
+  mix-blend-mode: screen;
 }
 
 .bg-flash {
   position:fixed;
   inset:0;
-  background:rgba(255,255,255,0);
+  background: rgba(255,255,255,0);
   pointer-events:none;
+  transition: background 120ms linear;
   z-index:2;
-  transition:background 120ms linear;
 }
-
-.input-row{margin-top:8px;}
-.hint{margin-top:12px;opacity:.95;font-size:18px;}
-
-.card, .card * { color:#eaf2ff; }
