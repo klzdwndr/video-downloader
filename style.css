@@ -301,3 +301,15 @@ body::before {
   background: rgba(0,0,0,0.22) !important;
   backdrop-filter: blur(6px) !important;
 }
+/* FORCE TRANSPARAN UI OVERRIDE */
+.card,
+#urlInput,
+.button-row .btn,
+.btn-primary,
+.btn-ghost,
+.result {
+  background: rgba(0,0,0,0.22) !important;
+  backdrop-filter: blur(6px) !important;
+  border: none !important;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.45) !important;
+}
