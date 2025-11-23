@@ -1,5 +1,6 @@
 /* ===========================================
-   KILLUA LIGHTNING NEON THEME (Clean Version)
+   KILLUA LIGHTNING NEON THEME - TRANSPARENT + LIGHTNING READY
+   (Replace entire style.css with this)
    =========================================== */
 
 /* RESET */
@@ -16,213 +17,191 @@ body {
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
 }
 
-/* OVERLAY (TIPIS, FOTO TETAP JELAS) */
+/* OVERLAY TIPIS (biar foto tetap jelas — non-blur agar gambar ga ngeblur) */
 body::before {
   content:"";
   position:fixed;
   inset:0;
-  background: linear-gradient(180deg, rgba(2,6,20,0.45), rgba(2,6,20,0.55));
-  backdrop-filter: none !important;   /* MATIKAN BLUR */
+  background: linear-gradient(180deg, rgba(2,6,20,0.20), rgba(2,6,20,0.28));
+  /* jangan blur background supaya Killua tetap tajam */
+  backdrop-filter: none;
   z-index: 0;
+  pointer-events: none;
 }
 
-/* MAIN PAGE WRAPPER */
+/* MAIN PAGE WRAPPER - pastikan UI di atas canvas */
 .page {
   position: relative;
-  z-index: 2; /* above bg and lightning canvas */
+  z-index: 3; /* harus > canvas(1) dan bg-flash(2) */
   max-width: 820px;
   margin: 25px auto;
   padding: 20px;
 }
 
 /* =============================
-   CARD (GLASSMORPHISM + NEON)
+   CARD (TRANSPARENT)
    ============================= */
 .card {
-  background: rgba(0, 8, 25, 0.35);
-  backdrop-filter: blur(8px);
-  border-radius: 16px;
+  /* buat transparan tapi masih readable */
+  background: rgba(0,0,0,0.18);           /* tipis */
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px;
   padding: 18px;
-  border: 1px solid rgba(120,160,255,0.18);
-  box-shadow: 0 4px 22px rgba(0, 0, 0, 0.55),
-              0 0 22px rgba(45,120,255,0.28) inset;
+  backdrop-filter: blur(6px);             /* lembut */
+  box-shadow: 0 6px 22px rgba(0,0,0,0.35);
 }
 
-/* HEADER */
+/* header */
 .header { display:flex; gap:14px; align-items:center; margin-bottom:14px; }
 .brand { display:flex; gap:12px; align-items:center; }
 .avatar {
-  width:55px; height:55px; border-radius:50%;
-  background: radial-gradient(circle,#4a72ff,#1d2cff);
-  display:flex; justify-content:center; align-items:center;
-  font-weight: 700; color:white;
-  box-shadow: 0 0 14px rgba(85,130,255,0.75);
+  width:56px; height:56px; border-radius:50%;
+  background: linear-gradient(135deg,#1f5bff,#6d3bff);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;color:#fff; box-shadow: 0 6px 18px rgba(31,91,255,0.12);
 }
-.title { font-size:26px; margin:0; font-weight:900; }
-.subtitle { margin:0; opacity:.85; }
+.title { font-size:26px; margin:0 0 2px; font-weight:800; letter-spacing:0.2px; color:#f3fbff; }
+.subtitle { margin:0; opacity:0.9; color:#d5e9ff; font-size:13px; }
 
 /* INPUT */
+.input-label { display:block; color:#dbeefe; margin-bottom:8px; font-weight:600; }
+.input-row { display:block; margin-bottom:12px; }
 #urlInput {
-  width:100%;
-  padding:14px 16px;
-  border-radius:12px;
-  background: rgba(0,0,0,0.45);
-  color:#fff;
-  border: 1px solid rgba(140,180,255,0.35);
-  box-shadow: 0 0 10px rgba(60,110,255,0.25);
+  width:100%; padding:14px 16px; border-radius:10px;
+  border: 1px solid rgba(150,180,255,0.22);
+  background: rgba(0,0,0,0.22);            /* transparan */
+  color: #eaf6ff;
+  outline: none;
+  box-shadow: inset 0 2px 10px rgba(10,20,40,0.18);
+  font-size:15px;
+  backdrop-filter: blur(4px);
 }
 
-/* ====================
-   BUTTONS (NEON BLUE)
-   ==================== */
-.button-row { display:flex; gap:12px; margin-top:10px; }
+/* buttons */
+.button-row { display:flex; gap:12px; margin-bottom:12px; align-items:center; }
+.btn { padding:12px 20px; border-radius:12px; font-weight:700; cursor:pointer; border: none; transition: transform .14s ease, box-shadow .14s ease; }
+.btn:active { transform:translateY(1px); }
 
-.btn {
-  padding: 12px 20px;
-  border-radius: 14px;
-  font-weight: 700;
-  cursor:pointer;
-  border:none;
-}
-
+/* primary / ghost - transparent variants (overrides) */
 .btn-primary {
-  background: linear-gradient(180deg,#3f6aff,#2a4dff);
-  color:white;
-  box-shadow: 
-    0 0 18px rgba(77,130,255,0.7),
-    0 6px 16px rgba(0,0,0,0.35);
-  transition: .15s;
+  background: rgba(60,110,255,0.85);
+  color: #fff;
+  box-shadow: 0 8px 28px rgba(47,99,255,0.12), 0 0 14px rgba(47,99,255,0.06) inset;
+  backdrop-filter: blur(4px);
 }
-.btn-primary:hover {
-  filter: brightness(1.08);
-  box-shadow: 0 0 28px rgba(77,130,255,0.95);
-}
+.btn-primary:hover { filter:brightness(1.04); box-shadow: 0 12px 36px rgba(47,99,255,0.18); }
 
 .btn-ghost {
-  background: rgba(255,255,255,0.15);
-  color:white;
-}
-
-/* ==========================
-   STATUS BOX (SUCCESS/ERROR)
-   ========================== */
-#statusBox {
-  margin-top:12px;
-  padding:10px 16px;
-  border-radius:10px;
-  font-weight:800;
-  width:fit-content;
+  background: rgba(255,255,255,0.08);
+  color: #dbeefe;
+  border: 1px solid rgba(255,255,255,0.06);
   backdrop-filter: blur(4px);
-  z-index:3;
 }
 
-#statusBox[data-type="success"] {
-  background: rgba(40,170,90,0.75);
-  border:1px solid rgba(60,255,120,0.55);
-  color:white;
+/* status box styles (keperluan JS) */
+#statusBox {
+  display:block; margin-top:6px; padding:10px 12px; border-radius:8px;
+  color:#e9fff0; font-weight:700; width:fit-content;
+  background: linear-gradient(180deg,#2e8f5b,#1d6f48);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+  z-index: 4;
 }
+#statusBox[data-type="error"] { background: linear-gradient(180deg,#b03a3a,#8b2323); color:#fff7f7; }
 
-#statusBox[data-type="error"] {
-  background: rgba(200,40,40,0.75);
-  border:1px solid rgba(255,80,80,0.55);
-  color:white;
-}
+/* hint text */
+.hint { margin-top:8px; opacity:0.95; color:#cfe6ff; font-size:13px; }
 
-/* ====================
-   RESULT SECTION
-   ==================== */
-.result {
-  margin-top:20px;
-  background: rgba(0,0,20,0.35);
-  padding:16px;
-  border-radius:14px;
-  border:1px solid rgba(120,160,255,0.25);
-  backdrop-filter: blur(5px);
-}
+/* --- RESULT BOX --- */
+.result { margin-top:18px; padding:16px; border-radius:12px; background: rgba(0,0,10,0.18); border: 1px solid rgba(255,255,255,0.04); z-index:3; }
 .result.hidden { display:none; }
 
-/* VIDEO PLAYER + THUMBNAIL */
+/* player and thumbnail */
 .player, .thumb {
-  border-radius:12px;
-  box-shadow: 0 0 25px rgba(0,0,0,0.6),
-              0 0 30px rgba(45,120,255,0.45);
+  border-radius:10px; overflow:hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  border: 1px solid rgba(255,255,255,0.03);
+  background: rgba(0,0,0,0.10);
 }
 .player.hidden, .thumb.hidden { display:none; }
 
-/* RESULT ITEMS */
+/* result-list & items */
+.result-list { margin-top:12px; display:block; gap:12px; }
 .result-item {
-  background: rgba(0,0,40,0.35);
-  padding:14px;
-  border-radius:12px;
-  margin-bottom:12px;
-  border:1px solid rgba(120,160,255,0.22);
-  box-shadow: 0 0 14px rgba(40,100,255,0.25) inset;
+  padding: 12px; border-radius: 12px;
+  background: rgba(0,0,0,0.14);
+  border: 1px solid rgba(255,255,255,0.02);
+  margin-bottom:10px;
 }
 
-/* ============================
-   DOWNLOAD BUTTONS LIGHTNING
-   ============================ */
-.download-actions { display:flex; gap:12px; }
+/* Title section inside result */
+.result-item > div:first-child { margin-bottom:6px; }
+.result-item .download-actions { display:flex; gap:12px; align-items:center; margin-top:6px; }
 
-.download-btn,
-.btn-download {
-  display:inline-block;
-  padding:14px 20px;
-  border-radius:12px;
-  font-weight:800;
-  color:white;
-  text-align:center;
-  text-decoration:none;
-
-  background: linear-gradient(180deg,#4c7aff,#355cff);
-  box-shadow: 
-      0 0 18px rgba(70,120,255,0.85),
-      0 0 40px rgba(120,160,255,0.35);
-  transition: .15s;
+/* Large primary download button style (neon) */
+.download-btn, .btn-download {
+  display:inline-block; padding:14px 20px; border-radius:12px; font-weight:800; font-size:15px;
+  text-decoration:none; color:#fff;
+  background: linear-gradient(180deg,#3b6bff,#2b49d9); border: none;
+  box-shadow: 0 10px 30px rgba(59,107,255,0.12), 0 0 12px rgba(59,107,255,0.05) inset;
+  transition: transform .12s ease, box-shadow .12s ease;
 }
+.download-btn:hover, .btn-download:hover { transform: translateY(-2px); box-shadow: 0 14px 38px rgba(59,107,255,0.18); }
 
-.download-btn:hover {
-  filter: brightness(1.12);
-  box-shadow: 
-      0 0 28px rgba(80,140,255,1),
-      0 0 50px rgba(140,180,255,0.55);
-}
-
-/* Small open button */
+/* secondary small open button (outline) */
 .open-btn {
-  padding:10px 14px;
-  color:white;
-  border:1px solid rgba(140,160,255,0.45);
-  border-radius:10px;
-  text-decoration:none;
-  background: rgba(255,255,255,0.08);
+  display:inline-block; padding:10px 14px; border-radius:12px; font-weight:700; color:#cfe6ff;
+  text-decoration:none; border: 2px solid rgba(106,92,255,0.18); background: transparent;
+  box-shadow: 0 6px 20px rgba(10,20,40,0.12);
 }
 
-/* PARSER TITLE */
-.result h3 {
-  margin-top:12px;
-  font-size:22px;
-  color:white;
-  text-shadow: 0 0 12px rgba(90,130,255,0.65);
-}
+/* Foto/Audio buttons layout */
+.result-item .download-btn + .download-btn { margin-left:6px; }
 
-/* MOBILE */
+/* spacing for "Hasil Parser" heading */
+.result h3 { margin-top: 10px; font-size:20px; color:#fff; }
+
+/* --- Mobile tweaks --- */
 @media (max-width:520px) {
-  .download-actions {
-    flex-direction: column;
-  }
-  .download-btn, .btn-download {
-    width: 100%;
-  }
+  .page { padding: 14px; margin: 14px auto; }
+  .download-btn, .btn-download { width:100%; text-align:center; }
+  .result-item .download-actions { flex-direction: column; align-items: stretch; gap:10px; }
+  .button-row { flex-direction: row; }
+  .header { gap:10px; }
 }
+
+/* little decorative neon border on cards (subtle) */
+.card::after {
+  content:"";
+  position:absolute;
+  left: calc(50% - 410px + 8px);
+  top: 26px;
+  width: calc(100% - 16px);
+  height: calc(100% - 30px);
+  pointer-events:none;
+  border-radius:16px;
+  box-shadow: 0 0 40px rgba(40,80,255,0.03) inset;
+  z-index: 0;
+}
+
+/* Remove unwanted gray faint outline behind buttons (if present) */
+button, .download-btn, .btn { background-clip: padding-box; -webkit-appearance: none; }
+
+/* accessibility: focus */
+a:focus, button:focus, input:focus { outline: 3px solid rgba(59,107,255,0.14); outline-offset: 2px; }
+
+/* final tweak: reduce contrast for long text lines */
+.result-list div { line-height:1.5; color: rgba(235,245,255,0.92); }
 
 /* =========================
-   Lightning canvas + flash
+   Lightning canvas + flash (styles only)
+   JS will draw on #lightningCanvas and toggle .bg-flash
    ========================= */
 
-/* the canvas sits below .page (page z-index:2), canvas z-index:1 (under UI) */
+/* canvas sits under UI but above background */
 #lightningCanvas {
   position: fixed;
   left: 0;
@@ -230,42 +209,27 @@ body::before {
   width: 100vw;
   height: 100vh;
   pointer-events: none; /* jangan ganggu klik */
-  z-index: 1;
+  z-index: 2;            /* di bawah .page (3) tetapi di atas body bg (0) */
   mix-blend-mode: screen; /* bikin glow lebih 'neon' */
 }
 
-/* overlay flash — putih tipis saat kilat besar */
+/* overlay flash — putih tipis saat kilat besar (JS akan set background alpha) */
 .bg-flash {
   position: fixed;
   inset: 0;
   background: rgba(255,255,255,0);
   pointer-events: none;
-  z-index: 1;
+  z-index: 2;
   transition: background 120ms linear;
 }
-/* FORCE TRANSPARENT UI */
-.card {
-  background: rgba(0,0,0,0.22) !important;
-  backdrop-filter: blur(6px) !important;
+
+/* small helper for making UI even more transparent if requested */
+.force-ultra-transparent .card {
+  background: rgba(0,0,0,0.08) !important;
+  border: 1px solid rgba(255,255,255,0.04) !important;
+}
+.force-ultra-transparent #urlInput {
+  background: rgba(0,0,0,0.12) !important;
 }
 
-#urlInput {
-  background: rgba(0,0,0,0.22) !important;
-  border: 1px solid rgba(150,180,255,0.35) !important;
-  backdrop-filter: blur(4px) !important;
-}
-
-.btn-primary {
-  background: rgba(60,110,255,0.85) !important;
-  backdrop-filter: blur(4px) !important;
-}
-
-.btn-ghost {
-  background: rgba(255,255,255,0.12) !important;
-  backdrop-filter: blur(4px) !important;
-}
-
-.result {
-  background: rgba(0,0,20,0.28) !important;
-  backdrop-filter: blur(4px) !important;
-}
+/* done */
